@@ -267,3 +267,200 @@ SELECT nombre FROM producto WHERE nombre LIKE '%Monitor%' AND precio < 215;
 SELECT nombre, precio FROM producto WHERE precio >= 180 ORDER BY precio DESC, nombre ASC;
 
 ```
+---
+**3. Resuelva todas las consultas utilizando la sintaxis de SQL1 y SQL2:**
+
+3.1. Devuelve una lista con el nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo;
+
+-- SQL2
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo;
+```
+3.2. Devuelve una lista con el nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos. Ordene el resultado por el nombre del fabricante, por orden alfabético.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+ORDER BY fabricante.nombre;
+
+-- SQL2
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+ORDER BY fabricante.nombre;
+```
+3.3. Devuelve una lista con el identificador del producto, nombre del producto, identificador del fabricante y nombre del fabricante, de todos los productos de la base de datos.
+
+```sql
+-- SQL1
+SELECT producto.codigo, producto.nombre, fabricante.codigo, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo;
+
+-- SQL2
+SELECT producto.codigo, producto.nombre, fabricante.codigo, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo;
+```
+3.4. Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más barato.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE producto.precio = (SELECT MIN(precio) FROM producto);
+
+-- SQL2
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND producto.precio = (SELECT MIN(precio) FROM producto);
+```
+3.5. Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más caro.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE producto.precio = (SELECT MAX(precio) FROM producto);
+
+-- SQL2
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND producto.precio = (SELECT MAX(precio) FROM producto);
+```
+3.6. Devuelve una lista de todos los productos del fabricante Lenovo.
+
+```sql
+-- SQL1
+SELECT *
+FROM producto
+WHERE codigo_fabricante = (SELECT codigo FROM fabricante WHERE nombre = 'Lenovo');
+
+-- SQL2
+SELECT *
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND fabricante.nombre = 'Lenovo';
+```
+3.7. Devuelve una lista de todos los productos del fabricante Crucial que tengan un precio mayor que 200€.
+
+```sql
+-- SQL1
+SELECT *
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE fabricante.nombre = 'Crucial' AND producto.precio > 200;
+
+-- SQL2
+SELECT *
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND fabricante.nombre = 'Crucial' AND producto.precio > 200;
+```
+3.8. Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packard y Seagate. Sin utilizar el operador IN.
+
+```sql
+-- SQL1
+SELECT *
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE fabricante.nombre = 'Asus'
+OR fabricante.nombre = 'Hewlett-Packard'
+OR fabricante.nombre = 'Seagate';
+
+-- SQL2
+SELECT *
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND (fabricante.nombre = 'Asus'
+OR fabricante.nombre = 'Hewlett-Packard'
+OR fabricante.nombre = 'Seagate');
+```
+3.9. Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packard y Seagate. Utilizando el operador IN.
+
+```sql
+-- SQL1
+SELECT *
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE fabricante.nombre IN ('Asus', 'Hewlett-Packard', 'Seagate');
+
+-- SQL2
+SELECT *
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND fabricante.nombre IN ('Asus', 'Hewlett-Packard', 'Seagate');
+```
+3.10. Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre termine por la vocal 'e'.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE fabricante.nombre LIKE '%e';
+
+-- SQL2
+SELECT producto.nombre, producto.precio
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND fabricante.nombre LIKE '%e';
+```
+3.11. Devuelve un listado con el nombre y el precio de todos los productos cuyo nombre de fabricante contenga el carácter 'w' en su nombre.
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE fabricante.nombre LIKE '%w%';
+
+-- SQL2
+SELECT producto.nombre, producto.precio
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND fabricante.nombre LIKE '%w%';
+```
+3.12. Devuelve un listado con el nombre de producto, precio y nombre de fabricante, de todos los productos que tengan un precio mayor o igual a 180€. Ordene el resultado en primer lugar por el precio (en orden descendente) y en segundo lugar por el nombre (en orden ascendente)
+
+```sql
+-- SQL1
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto
+JOIN fabricante ON producto.codigo_fabricante = fabricante.codigo
+WHERE producto.precio >= 180
+ORDER BY producto.precio DESC, producto.nombre ASC;
+
+-- SQL2
+SELECT producto.nombre, producto.precio, fabricante.nombre
+FROM producto, fabricante
+WHERE producto.codigo_fabricante = fabricante.codigo
+AND producto.precio >= 180
+ORDER BY producto.precio DESC, producto.nombre ASC;
+```
+3.13. Devuelve un listado con el identificador y el nombre de fabricante, solamente de aquellos fabricantes que tienen productos asociados en la base de datos.
+
+```sql
+-- SQL1
+SELECT DISTINCT fabricante.codigo, fabricante.nombre
+FROM fabricante
+JOIN producto ON fabricante.codigo = producto.codigo_fabricante;
+
+-- SQL2
+SELECT DISTINCT fabricante.codigo, fabricante.nombre
+FROM fabricante, producto
+WHERE fabricante.codigo = producto.codigo_fabricante;
+```
